@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: "com.github.spacialcircumstances.gradle-cucumber-reporting"
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.github.spacialcircumstances:gradle-cucumber-reporting:0.1.24"
+  }
+}
+
+
+cucumberReports {
+  outputDir = file('build/cucumber-reports')
+  buildId = '0'
+  reports = files('build/cucumber-reports/cucumber-report.json')
+}
