@@ -20,6 +20,11 @@ jobs:
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
 
+      - name: Branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -30,7 +35,7 @@ jobs:
       - name: Upload results to S3
         env:
           REGION: ap-southeast-2
-          S3_BUCKET: ctaas-enterprise-poc/cucumberS3/
+          S3_BUCKET: ctaas-enterprise-poc/${{GITHUB_REPOSITORY}}/${{steps.extract_branch.outputs.branch}}/${{GITHUB_WORKFLOW}}/${{GITHUB_RUN_ID}}/
         run: |
           cd build/cucumber-reports
           aws s3 sync . s3://$S3_BUCKET --no-progress --delete --exclude "*html/*"
