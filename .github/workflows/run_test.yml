@@ -35,7 +35,7 @@ jobs:
       - name: Upload results to S3
         env:
           REGION: ap-southeast-2
-          S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}/
+          S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
         run: |
           cd build/cucumber-reports/cucumber-html-reports
           aws s3 sync . s3://$S3_BUCKET --no-progress --delete --exclude "*html/*"
