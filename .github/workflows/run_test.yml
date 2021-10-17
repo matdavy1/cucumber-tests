@@ -1,4 +1,4 @@
-name: DIGI_myIR_PIV
+name: XIAMS_PIV
 
 on:
   push:
