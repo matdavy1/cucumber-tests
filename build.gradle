@@ -9,3 +9,8 @@ dependencies {
 repositories {
     mavenCentral()
 }
+configurations.all {
+    resolutionStrategy {
+        force 'xml-apis:xml-apis:1.0.b2'
+    }
+}
