@@ -2,9 +2,7 @@ name: XIAMS_PIV
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [agg-report]
 
   workflow_dispatch:
 
@@ -19,24 +17,13 @@ jobs:
       - name: run cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
-
-      - name: Branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
-      - name: AWS configure
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-2
-
-      - name: Upload results to S3
-        env:
-          REGION: ap-southeast-2
-          S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
+      
+      - name: Get report directory
         run: |
-          cd build/cucumber-reports/cucumber-html-reports
-          aws s3 sync . s3://$S3_BUCKET --no-progress --delete --exclude "*html/*"
-          for htmlfile in *.html; do echo "https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/${htmlfile}"; done
+          cd build/reports/cucumber_reports
+         
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with: 
+          name: assets-for-download
+          path: cucumber_reports
