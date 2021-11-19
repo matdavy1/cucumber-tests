@@ -17,13 +17,9 @@ jobs:
       - name: run cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
-      
-      - name: Get report directory
-        run: |
-          cd build/reports/cucumber_reports
          
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with: 
           name: assets-for-download
-          path: cucumber_reports
+          path: build/reports/cucumber_reports
