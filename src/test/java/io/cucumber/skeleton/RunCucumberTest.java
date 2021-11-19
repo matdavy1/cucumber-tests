@@ -25,7 +25,7 @@ import cucumber.api.CucumberOptions;
                 "junit:build/reports/cucumber-results.xml",
         },
         features = "src/test/resources/io/cucumber/skeleton",
-        glue = "src/test/java/io/cucumber/skeleton"
+        glue = "io.cucumber.skeleton"
 
 )
 
