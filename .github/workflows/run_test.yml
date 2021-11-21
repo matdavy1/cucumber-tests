@@ -15,6 +15,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: agg-report
+
+      - name: run cucumber test 🔧
+        run: chmod +x gradlew && ./gradlew test
+        continue-on-error: true
+        
       - name: Branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
