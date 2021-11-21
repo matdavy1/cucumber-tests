@@ -38,5 +38,5 @@ jobs:
         #   S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
         run: |
           pwd
-          cd build/reports/cucumber_reports
-          for htmlfile in *.html; do echo "https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/${htmlfile}"; done
+          cd build/reports
+#          for htmlfile in *.html; do echo "https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/${htmlfile}"; done
