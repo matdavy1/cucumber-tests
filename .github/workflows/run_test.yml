@@ -36,12 +36,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: env.REGION
+          aws-region: ${{ env.REGION }}
 
       - name: Upload results to S3
         run: |
           cd build/cucumber-reports/cucumber-html-reports
-          aws s3 sync . s3://env.S3_BUCKET --no-progress --delete --exclude "html/"
+          aws s3 sync . s3://${{ env.S3_BUCKET }} --no-progress --delete --exclude "html/"
 
       - name: Log report URLs
         run: |
