@@ -1,4 +1,6 @@
 apply plugin: 'java'
+apply plugin: "com.github.spacialcircumstances.gradle-cucumber-reporting"
+
 
 dependencies {
     testImplementation 'info.cukes:cucumber-java:1.2.5'
@@ -13,4 +15,23 @@ configurations.all {
     resolutionStrategy {
         force 'xml-apis:xml-apis:1.0.b2'
     }
+}
+
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.github.spacialcircumstances:gradle-cucumber-reporting:0.1.24"
+  }
+}
+
+
+cucumberReports {
+  outputDir = file('build/cucumber-reports')
+  buildId = '0'
+  reports = files('build/cucumber-reports/cucumber-report.json')
 }
