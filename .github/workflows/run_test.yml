@@ -2,7 +2,7 @@ name: XIAMS_PIV
 
 on:
   push:
-    branches: [main]
+    branches: [agg-report]
   pull_request:
     branches: [main]
 
