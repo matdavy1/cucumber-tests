@@ -2,7 +2,7 @@ name: XIAMS_PIV
 
 on:
   push:
-    branches: [agg-report]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -44,5 +44,6 @@ jobs:
           S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
         run: |
           cd build/cucumber-reports/cucumber-html-reports
+          aws s3 sync . s3://$S3_BUCKET --no-progress --delete --exclude "html/"
           echo "Aggregate report: https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/cucumber-results-agg-test-results.html"
           echo "Overview report: https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/overview-features.html"
