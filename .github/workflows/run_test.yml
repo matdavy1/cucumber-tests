@@ -39,11 +39,16 @@ jobs:
           aws-region: ap-southeast-2
 
       - name: Upload results to S3
-        env:
-          REGION: ap-southeast-2
-          S3_BUCKET: ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
         run: |
+          export S3_Bucket=ctaas-enterprise-poc/${{github.repository}}/${{steps.extract_branch.outputs.branch}}/${{github.workflow}}/${{github.run_number}}
+          echo "::set-env name=S3_BUCKET::$S3_Bucket"
           cd build/cucumber-reports/cucumber-html-reports
           aws s3 sync . s3://$S3_BUCKET --no-progress --delete --exclude "html/"
+
+      - name: Log report URLs
+        env:
+          REGION: ap-southeast-2
+        run: |
           echo "Aggregate report: https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/cucumber-results-agg-test-results.html"
           echo "Overview report: https://s3-${REGION}.amazonaws.com/${S3_BUCKET}/overview-features.html"
+
