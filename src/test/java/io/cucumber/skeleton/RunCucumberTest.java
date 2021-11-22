@@ -8,21 +8,13 @@ import cucumber.api.CucumberOptions;
 @RunWith(ExtendedCucumber.class)
 
 @ExtendedCucumberOptions(
-         jsonReport = "build/reports/json/testresult.json",
-        customTemplatesPath = "/templates/reports/templates.json",
-        overviewReport = true,
-        jsonUsageReport = "build/reports/json/cucumber-usage.json",
+        jsonReport = "build/cucumber-reports/cucumber-report.json",
         detailedAggregatedReport = true,
-        toPDF = true,
-        outputFolder = "build/reports/cucumber_reports/"
+        outputFolder = "build/cucumber-reports/cucumber-html-reports"
 )
 @CucumberOptions(
         plugin = {
-                "html:build/reports/html",
-                "json:build/reports/json/testresult.json",
-                "pretty:build/reports/cucumber-pretty.txt",
-                "usage:build/reports/json/cucumber-usage.json",
-                "junit:build/reports/cucumber-results.xml",
+               "json:build/cucumber-reports/cucumber-report.json",
         },
         features = "src/test/resources/io/cucumber/skeleton",
         glue = "io.cucumber.skeleton"
