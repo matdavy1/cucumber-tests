@@ -9,17 +9,14 @@ import cucumber.api.CucumberOptions;
 
 @ExtendedCucumberOptions(
         jsonReport = "build/cucumber-reports/cucumber-report.json",
+        customTemplatesPath = "templates/templates.json",
         detailedAggregatedReport = true,
-        outputFolder = "build/cucumber-reports/cucumber-html-reports"
-)
+        outputFolder = "build/cucumber-reports/cucumber-html-reports")
 @CucumberOptions(
         plugin = {
-               "json:build/cucumber-reports/cucumber-report.json",
+                "json:build/cucumber-reports/cucumber-report.json",
         },
         features = "src/test/resources/io/cucumber/skeleton",
-        glue = "io.cucumber.skeleton"
-
-)
-
+        glue = "io.cucumber.skeleton")
 public class RunCucumberTest {
 }
