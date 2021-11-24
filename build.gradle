@@ -37,3 +37,35 @@ cucumberReports {
   buildId = '0'
   reports = files('build/cucumber-reports/cucumber-report.json')
 }
+
+abstract class ReportTask extends DefaultTask {
+
+    private String reportUrl;
+
+    @Option(option = "reportUrl", description = "Configures the URL to be verified.")
+    public void setUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
+    }
+    @Input
+    public String getUrl() {
+        return reportUrl;
+    }
+    @TaskAction
+    def updateReport() {
+        println(reportUrl)
+        String fileContents = new File('build/cucumber-reports/cucumber-html-reports/overview-features.html').text
+        new FileWriter("build/cucumber-reports/cucumber-html-reports/example.txt", true).with {
+            write(fileContents)
+            flush()
+        }
+        String delimiter = '<li role="presentation"  class="active" ><a href="overview-features.html">Features</a></li>'
+        fileContents = fileContents.replace(delimiter,
+                "<li role=\"presentation\" ><a href=\"${reportUrl}\">Previous results</a></li>\n" + delimiter )
+        FileWriter fWriter = new FileWriter("build/cucumber-reports/cucumber-html-reports/overview-features.html")
+        BufferedWriter writer = new BufferedWriter(fWriter)
+        writer.write(fileContents)
+        writer.close()
+    }
+}
+
+tasks.register('updateReport', ReportTask)
