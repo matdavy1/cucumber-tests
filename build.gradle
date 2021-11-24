@@ -48,7 +48,8 @@ abstract class ReportTask extends DefaultTask {
     }
 
     def updateReport(String reportFilePath) {
-        def pathArray = reportFilePath.split('\\\\')
+        println(reportFilePath)
+        def pathArray = reportFilePath.split('/')
         String fileContents = new File(reportFilePath).text
         String delimiter = '<li role="presentation"'
         fileContents = fileContents.replaceFirst(delimiter,
