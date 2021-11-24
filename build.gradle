@@ -48,16 +48,27 @@ abstract class ReportTask extends DefaultTask {
     }
 
     def updateReport(String reportFilePath) {
-        println(reportFilePath)
-        def pathArray = reportFilePath.split('/')
+        reportFilePath = reportFilePath.replaceAll("\\\\", "/")
         String fileContents = new File(reportFilePath).text
-        String delimiter = '<li role="presentation"'
-        fileContents = fileContents.replaceFirst(delimiter,
-                delimiter + " ><a href=\"${reportUrl + "/${pathArray[pathArray.size() - 1]}"}\">Previous results</a></li>\n" + delimiter )
         FileWriter fWriter = new FileWriter(reportFilePath)
         BufferedWriter writer = new BufferedWriter(fWriter)
-        writer.write(fileContents)
+        writer.write(updateFileContents(fileContents, reportFilePath.split("/").last()))
         writer.close()
+    }
+
+    String updateFileContents(String fileContents, String fileName){
+        String delimiter = '<li role="presentation"'
+        return fileContents.replaceFirst(delimiter,
+            delimiter + " ><a href=\"${previousUrl() + "${fileName}"}\">Previous results</a></li>\n" +
+            delimiter + " ><a href=\"${reportUrl + "/overview-features.html"}\">Latest results</a></li>\n" + delimiter)
+    }
+
+    String previousUrl(){
+        def reportUrlSplit = reportUrl.split("/")
+        reportUrlSplit[reportUrlSplit.size() - 1] = reportUrlSplit.last().toInteger() - 1
+        String previousReportUrl = ""
+        reportUrlSplit.each {path -> previousReportUrl += path + "/"}
+        return previousReportUrl
     }
 
     @TaskAction
