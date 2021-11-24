@@ -42,30 +42,31 @@ abstract class ReportTask extends DefaultTask {
 
     private String reportUrl;
 
-    @Option(option = "reportUrl", description = "Configures the URL to be verified.")
+    @Option(option = "reportUrl", description = "sets reportUrl")
     public void setUrl(String reportUrl) {
         this.reportUrl = reportUrl;
     }
-    @Input
-    public String getUrl() {
-        return reportUrl;
-    }
-    @TaskAction
-    def updateReport() {
-        println(reportUrl)
-        String fileContents = new File('build/cucumber-reports/cucumber-html-reports/overview-features.html').text
-        new FileWriter("build/cucumber-reports/cucumber-html-reports/example.txt", true).with {
-            write(fileContents)
-            flush()
-        }
-        String delimiter = '<li role="presentation"  class="active" ><a href="overview-features.html">Features</a></li>'
-        fileContents = fileContents.replace(delimiter,
-                "<li role=\"presentation\" ><a href=\"${reportUrl}\">Previous results</a></li>\n" + delimiter )
-        FileWriter fWriter = new FileWriter("build/cucumber-reports/cucumber-html-reports/overview-features.html")
+
+    def updateReport(String reportFile) {
+        String fileContents = new File(reportFile).text
+        String delimiter = '<li role="presentation"'
+        fileContents = fileContents.replaceFirst(delimiter,
+                delimiter + " ><a href=\"${reportUrl}\">Previous results</a></li>\n" + delimiter )
+        FileWriter fWriter = new FileWriter(reportFile)
         BufferedWriter writer = new BufferedWriter(fWriter)
         writer.write(fileContents)
         writer.close()
     }
+
+    @TaskAction
+    def updateReports() {
+        new File('build/cucumber-reports/cucumber-html-reports/').eachFileRecurse(groovy.io.FileType.FILES) {
+            if(it.name.endsWith('.html')) {
+                updateReport(it.toString())
+            }
+        }
+    }
+
 }
 
-tasks.register('updateReport', ReportTask)
+tasks.register('updateReports', ReportTask)

@@ -32,7 +32,7 @@ jobs:
           echo "S3_BUCKET=ctaas-enterprise-poc/${{github.repository}}/${GITHUB_REF#refs/heads/}/${{github.workflow}}/${{github.run_number}}" >> $GITHUB_ENV
 
       - name: Update report
-        run: gradle updateReport --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}/overview-tags.html"
+        run: gradle updateReport --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}/overview-features.html"
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
