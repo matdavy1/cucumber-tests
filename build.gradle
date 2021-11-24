@@ -47,12 +47,13 @@ abstract class ReportTask extends DefaultTask {
         this.reportUrl = reportUrl;
     }
 
-    def updateReport(String reportFile) {
-        String fileContents = new File(reportFile).text
+    def updateReport(String reportFilePath) {
+        def pathArray = reportFilePath.split('\\\\')
+        String fileContents = new File(reportFilePath).text
         String delimiter = '<li role="presentation"'
         fileContents = fileContents.replaceFirst(delimiter,
-                delimiter + " ><a href=\"${reportUrl}\">Previous results</a></li>\n" + delimiter )
-        FileWriter fWriter = new FileWriter(reportFile)
+                delimiter + " ><a href=\"${reportUrl + "/${pathArray[pathArray.size() - 1]}"}\">Previous results</a></li>\n" + delimiter )
+        FileWriter fWriter = new FileWriter(reportFilePath)
         BufferedWriter writer = new BufferedWriter(fWriter)
         writer.write(fileContents)
         writer.close()
