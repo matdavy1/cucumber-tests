@@ -37,3 +37,49 @@ cucumberReports {
   buildId = '0'
   reports = files('build/cucumber-reports/cucumber-report.json')
 }
+
+abstract class ReportTask extends DefaultTask {
+
+    private String reportUrl;
+
+    @Option(option = "reportUrl", description = "sets reportUrl")
+    public void setUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
+    }
+
+    def updateReport(String reportFilePath) {
+        reportFilePath = reportFilePath.replaceAll("\\\\", "/")
+        String fileContents = new File(reportFilePath).text
+        FileWriter fWriter = new FileWriter(reportFilePath)
+        BufferedWriter writer = new BufferedWriter(fWriter)
+        writer.write(updateFileContents(fileContents, reportFilePath.split("/").last()))
+        writer.close()
+    }
+
+    String updateFileContents(String fileContents, String fileName){
+        String delimiter = '<li role="presentation"'
+        return fileContents.replaceFirst(delimiter,
+            delimiter + " ><a href=\"${previousUrl() + "${fileName}"}\">Previous results</a></li>\n" +
+            delimiter + " ><a href=\"${reportUrl + "/overview-features.html"}\">Latest results</a></li>\n" + delimiter)
+    }
+
+    String previousUrl(){
+        def reportUrlSplit = reportUrl.split("/")
+        reportUrlSplit[reportUrlSplit.size() - 1] = reportUrlSplit.last().toInteger() - 1
+        String previousReportUrl = ""
+        reportUrlSplit.each {path -> previousReportUrl += path + "/"}
+        return previousReportUrl
+    }
+
+    @TaskAction
+    def updateReports() {
+        new File('build/cucumber-reports/cucumber-html-reports/').eachFileRecurse(groovy.io.FileType.FILES) {
+            if(it.name.endsWith('.html')) {
+                updateReport(it.toString())
+            }
+        }
+    }
+
+}
+
+tasks.register('updateReports', ReportTask)

@@ -12,6 +12,9 @@ jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
+    env: 
+      REGION: "ap-southeast-2"
+      S3_BUCKET: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/${{github.run_number}}"
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -26,10 +29,8 @@ jobs:
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
 
-      - name: Set environment variables
-        run: |
-          echo "REGION=ap-southeast-2" >> $GITHUB_ENV
-          echo "S3_BUCKET=ctaas-enterprise-poc/${{github.repository}}/${GITHUB_REF#refs/heads/}/${{github.workflow}}/${{github.run_number}}" >> $GITHUB_ENV
+      - name: Update report
+        run: gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
