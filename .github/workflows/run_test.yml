@@ -29,10 +29,10 @@ jobs:
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
 
-#      - name: Update reports
-#        run: |
-#          echo "BASE_REPORT_URL=https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}" >> $GITHUB_ENV
-#          gradle updateReports --reportUrl=${{ env.BASE_REPORT_URL }}
+      - name: Update reports
+        run: |
+          echo "BASE_REPORT_URL=https://s3-$REGION.amazonaws.com/$S3_BUCKET" >> $GITHUB_ENV
+          gradle updateReports --reportUrl=${{ env.BASE_REPORT_URL }}
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
