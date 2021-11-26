@@ -15,7 +15,6 @@ jobs:
     env: 
       REGION: "ap-southeast-2"
       S3_BUCKET: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/${{github.run_number}}"
-      BASE_REPORT_URL: "https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -31,7 +30,9 @@ jobs:
         continue-on-error: true
 
       - name: Update reports
-        run: gradle updateReports --reportUrl=env.BASE_REPORT_URL
+        run: |
+          echo "BASE_REPORT_URL=${{ https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}} }}" >> $GITHUB_ENV
+          gradle updateReports --reportUrl=env.BASE_REPORT_URL
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
