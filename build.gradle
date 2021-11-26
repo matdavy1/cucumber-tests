@@ -59,16 +59,25 @@ abstract class ReportTask extends DefaultTask {
     String updateFileContents(String fileContents, String fileName){
         String delimiter = '<li role="presentation"'
         return fileContents.replaceFirst(delimiter,
-            delimiter + " ><a href=\"${previousUrl() + "${fileName}"}\">Previous results</a></li>\n" +
-            delimiter + " ><a href=\"${reportUrl + "/overview-features.html"}\">Latest results</a></li>\n" + delimiter)
+            delimiter + " ><a href=\"${previousReportUrl() + "${fileName}"}\">Previous results</a></li>\n" +
+            delimiter + " ><a href=\"${latestReportUrl() + "/overview-features.html"}\">Latest results</a></li>\n" + delimiter)
     }
 
-    String previousUrl(){
+    String previousReportUrl(){
         def reportUrlSplit = reportUrl.split("/")
-        reportUrlSplit[reportUrlSplit.size() - 1] = reportUrlSplit.last().toInteger() - 1
-        String previousReportUrl = ""
-        reportUrlSplit.each {path -> previousReportUrl += path + "/"}
-        return previousReportUrl
+        return replaceRunNumber((reportUrlSplit.last().toInteger() - 1).toString())
+    }
+
+    String latestReportUrl(){
+        return replaceRunNumber("lastCompletedBuild")
+    }
+
+    String replaceRunNumber(String runNumber){
+        def reportUrlSplit = reportUrl.split("/")
+        reportUrlSplit[reportUrlSplit.size() - 1] = runNumber
+        String updatedReportUrl = ""
+        reportUrlSplit.each {path -> updatedReportUrl += path + "/"}
+        return updatedReportUrl
     }
 
     @TaskAction
