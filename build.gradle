@@ -41,10 +41,16 @@ cucumberReports {
 abstract class ReportTask extends DefaultTask {
 
     private String reportUrl;
+    private String githubUrl;
 
     @Option(option = "reportUrl", description = "sets reportUrl")
-    public void setUrl(String reportUrl) {
+    public void setReportUrl(String reportUrl) {
         this.reportUrl = reportUrl;
+    }
+
+    @Option(option = "githubUrl", description = "sets githubUrl")
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
     }
 
     def updateReport(String reportFilePath) {
@@ -57,11 +63,12 @@ abstract class ReportTask extends DefaultTask {
     }
 
     String updateFileContents(String fileContents, String fileName){
-        println(fileName)
         String delimiter = '<li role="presentation"'
         return fileContents.replaceFirst(delimiter,
             delimiter + " ><a href=\"${previousReportUrl() + fileName}\">Previous results</a></li>\n" +
-            delimiter + " ><a href=\"${latestReportUrl() + fileName}\">Latest results</a></li>\n" + delimiter)
+            delimiter + " ><a href=\"${latestReportUrl() + fileName}\">Latest results</a></li>\n" +
+            delimiter + " ><a href=\"${githubUrl()}\">Github</a></li>\n" + delimiter)
+
     }
 
     String previousReportUrl(){
@@ -71,6 +78,10 @@ abstract class ReportTask extends DefaultTask {
 
     String latestReportUrl(){
         return replaceRunNumber("lastCompletedBuild")
+    }
+
+    String githubUrl(){
+        return githubUrl
     }
 
     String replaceRunNumber(String runNumber){

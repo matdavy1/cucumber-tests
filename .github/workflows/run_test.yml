@@ -31,7 +31,9 @@ jobs:
         continue-on-error: true
 
       - name: Update reports
-        run: gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
+        run: >
+          gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
+          --githubUrl="https://github.com/${{github.repository_owner}}/${{github.repository}}/runs/${{github.run_id}}"
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
