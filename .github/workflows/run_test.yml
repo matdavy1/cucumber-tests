@@ -15,7 +15,7 @@ jobs:
     env:
       REGION: "ap-southeast-2"
       S3_BUCKET: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/${{github.run_number}}"
-      S3_LATEST_RUN: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/latestRun"
+      S3_LATEST_RUN: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/lastCompletedBuild"
     steps:
       - name: checkout
         uses: actions/checkout@v2
