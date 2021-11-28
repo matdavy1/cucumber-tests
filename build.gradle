@@ -57,6 +57,7 @@ abstract class ReportTask extends DefaultTask {
     }
 
     String updateFileContents(String fileContents, String fileName){
+        println(fileName)
         String delimiter = '<li role="presentation"'
         return fileContents.replaceFirst(delimiter,
             delimiter + " ><a href=\"${previousReportUrl() + fileName}\">Previous results</a></li>\n" +
