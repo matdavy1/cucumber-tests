@@ -12,9 +12,10 @@ jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
-    env: 
+    env:
       REGION: "ap-southeast-2"
       S3_BUCKET: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/${{github.run_number}}"
+      S3_LATEST_RUN: "ctaas-enterprise-poc/${{github.repository}}/${{github.workflow}}/lastCompletedBuild"
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -29,8 +30,10 @@ jobs:
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
 
-      - name: Update report
-        run: gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
+      - name: Update reports
+        run: >
+          gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
+          --githubUrl="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
 
       - name: AWS configure
         uses: aws-actions/configure-aws-credentials@v1
@@ -43,6 +46,8 @@ jobs:
         run: |
           cd build/cucumber-reports/cucumber-html-reports
           aws s3 sync . s3://${{ env.S3_BUCKET }} --no-progress --delete --exclude "html/"
+          echo Updating latest run folder
+          aws s3 sync s3://${{ env.S3_BUCKET }} s3://${{ env.S3_LATEST_RUN }} --no-progress --delete --exclude "html/"
 
       - name: Log report URLs
         run: |
