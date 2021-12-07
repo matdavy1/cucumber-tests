@@ -1,0 +1,20 @@
+name: csv_artifact
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: artifact csv file
+        uses: actions/upload-artifact@v2
+        with:
+          name: sample
+          path: sample.csv
