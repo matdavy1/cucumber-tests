@@ -30,6 +30,12 @@ jobs:
         run: chmod +x gradlew && ./gradlew test
         continue-on-error: true
 
+      - name: artifact cucumber-report.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: cucumber-report
+          path: build/cucumber-report.json
+
       - name: Update reports
         run: >
           gradle updateReports --reportUrl="https://s3-${{env.REGION}}.amazonaws.com/${{env.S3_BUCKET}}"
