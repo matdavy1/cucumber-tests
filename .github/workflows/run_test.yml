@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cucumber-report
-          path: build/cucumber-report.json
+          path: build/cucumber-reports/cucumber-report.json
 
       - name: Update reports
         run: >
