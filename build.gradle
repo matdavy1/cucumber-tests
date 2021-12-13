@@ -104,3 +104,8 @@ abstract class ReportTask extends DefaultTask {
 }
 
 tasks.register('updateReports', ReportTask)
+
+
+test { 
+    systemProperty "cucumber.options", System.getProperty("cucumber.options") 
+} 

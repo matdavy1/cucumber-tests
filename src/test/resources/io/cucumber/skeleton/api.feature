@@ -1,3 +1,4 @@
+@Api
 Feature: Api
 
   Scenario: make an api call
