@@ -1,12 +1,11 @@
 name: Belly
 
 on:
+  [workflow_dispatch]
   push:
     branches: [child-workflows]
   pull_request:
     branches: [main]
-
-  workflow_dispatch:
 
 jobs:
   build:
