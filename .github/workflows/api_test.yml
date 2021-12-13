@@ -2,7 +2,7 @@ name: Api
 
 on:
   push:
-    branches: [main]
+    branches: [child-workflows]
   pull_request:
     branches: [main]
 
