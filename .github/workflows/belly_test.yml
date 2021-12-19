@@ -10,7 +10,7 @@ on:
     inputs:
       run-failing-scenario:
         type: boolean
-        description: 'set to false to skip the failing belly scenario'     
+        description: 'run failing belly scenario'     
         required: false
         default: true
 
