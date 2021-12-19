@@ -9,6 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       run-failing-scenario:
+        type: boolean
         description: 'set to false to skip the failing belly scenario'     
         required: false
         default: true
