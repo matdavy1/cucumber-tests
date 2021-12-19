@@ -7,6 +7,11 @@ on:
     branches: [main]
 
   workflow_dispatch:
+    inputs:
+      run-failing-scenario:
+        description: 'set to false to skip the failing belly scenario'     
+        required: false
+        default: true
 
 jobs:
   build:
@@ -27,7 +32,13 @@ jobs:
           java-version: '8'
 
       - name: run cucumber test 🔧
+        if: ${{ github.event.inputs.run-failing-scenario }}
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Belly"
+        continue-on-error: true
+
+      - name: skip failing test 🔧
+        if: ${{ !github.event.inputs.run-failing-scenario }}
+        run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Belly --tags ~@Failing-scenario"
         continue-on-error: true
 
       - name: artifact cucumber-report.json

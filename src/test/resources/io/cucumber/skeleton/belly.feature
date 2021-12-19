@@ -6,6 +6,7 @@ Feature: Belly
     When I wait 7 hour
     Then my belly should growl
 
+  @Failing-scenario
   Scenario: a lot cukes
     Given I have 22 cukes in my belly
     When I wait 5 hour
