@@ -32,8 +32,8 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: echo input
-        run: echo ${{ github.event.inputs.run-failing-scenario }}
+      - name: echo !input
+        run: echo ${{ !github.event.inputs.run-failing-scenario }}
 
       - name: run cucumber test 🔧
         if: ${{ github.event.inputs.run-failing-scenario }}
