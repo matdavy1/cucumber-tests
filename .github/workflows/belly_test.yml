@@ -32,16 +32,15 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: echo !input
-        run: echo ${{ !github.event.inputs.run-failing-scenario }}
+      
 
       - name: run cucumber test 🔧
-        if: ${{ github.event.inputs.run-failing-scenario }}
+        if: ${{ github.event.inputs.run-failing-scenario == 'true' }}
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Belly"
         continue-on-error: true
 
       - name: skip failing test 🔧
-        if: ${{ !github.event.inputs.run-failing-scenario }}
+        if: ${{ github.event.inputs.run-failing-scenario == 'false'}}
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Belly --tags ~@Failing-scenario"
         continue-on-error: true
 
