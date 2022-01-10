@@ -11,7 +11,7 @@ on:
       run-passing:
         type: boolean
         description: set to true to run the passing test
-        default: true
+        default: "true"
 
 jobs:
   build:
@@ -27,13 +27,13 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '8'
-
-      - name: run cucumber test 🔧
+          
+      - name: run passing cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api"
         if: ( ${{github.event.inputs.run-passing}} == true )
         continue-on-error: true
-
-       - name: run cucumber test 🔧
+        
+      - name: run failing cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api-failing"
         if: ( ${{github.event.inputs.run-passing}} == false )
         continue-on-error: true
