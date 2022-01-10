@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
    inputs:
       run-passing:
-        type: string
+        type: boolean
         description: set to true to run the passing test
-        default: "true"
+        default: 'true'
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
           java-version: '8'
           
       - name: run passing cucumber test 🔧
-        if: ( ${{github.event.inputs.run-passing}} == 'true' )
+        if: ${{github.event.inputs.run-passing}} == 'true'
         run: echo hehe
           
 #       - if: ( ${{github.event.inputs.run-passing}} == 'true' )
