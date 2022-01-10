@@ -27,8 +27,8 @@ jobs:
           java-version: '8'
           
       - name: run passing cucumber test 🔧
-        run: echo ${{github.event.inputs.run-passing}}
-        continue-on-error: true
+        if: ( ${{github.event.inputs.run-passing}} == 'true' )
+        run: echo hehe
           
 #       - if: ( ${{github.event.inputs.run-passing}} == 'true' )
 #         name: run passing cucumber test 🔧
