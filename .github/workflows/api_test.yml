@@ -7,6 +7,11 @@ on:
     branches: [main]
 
   workflow_dispatch:
+   inputs:
+      run-passing:
+        type: boolean
+        description: set to true to run the passing test
+        default: true
 
 jobs:
   build:
@@ -25,6 +30,12 @@ jobs:
 
       - name: run cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api"
+        if: ( ${{github.event.inputs.run-passing}} == true )
+        continue-on-error: true
+
+       - name: run cucumber test 🔧
+        run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api-failing"
+        if: ( ${{github.event.inputs.run-passing}} == false )
         continue-on-error: true
 
       - name: artifact cucumber-report.json

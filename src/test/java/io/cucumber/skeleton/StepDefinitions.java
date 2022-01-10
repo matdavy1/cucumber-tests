@@ -56,9 +56,9 @@ public class StepDefinitions {
         scenario.write(con.getURL().toString());
     }
 
-    @Then("^I should get a 200 response$")
-    public void I_should_get_a_200_response() throws IOException {
-        assertEquals(200, con.getResponseCode());
+    @Then("^I should get a (.+) response$")
+    public void I_should_get_a_200_response(int responseCode) throws IOException {
+        assertEquals(responseCode, con.getResponseCode());
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
