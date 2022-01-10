@@ -8,7 +8,8 @@ on:
    inputs:
       run-passing:
         type: boolean
-        description: set to true to run the passing test
+        description: 'run passing test'     
+        required: false
         default: 'true'
 
 jobs:
@@ -27,7 +28,7 @@ jobs:
           java-version: '8'
           
       - name: run passing cucumber test 🔧
-        if: ${{github.event.inputs.run-passing}} == true
+        if: ${{github.event.inputs.run-passing}} == 'true'
         run: echo hehe
           
 #       - if: ( ${{github.event.inputs.run-passing}} == 'true' )
