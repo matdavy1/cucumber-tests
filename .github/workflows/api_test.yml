@@ -28,7 +28,7 @@ jobs:
           java-version: '8'
           
       - name: run passing cucumber test 🔧
-        if: ${{github.event.inputs.run-passing}} == 'true'
+        if: ${{github.event.inputs.run-passing == 'true' }}
         run: echo hehe
           
 #       - if: ( ${{github.event.inputs.run-passing}} == 'true' )
