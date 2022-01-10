@@ -26,26 +26,23 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '8'
+  
           
       - name: run passing cucumber test 🔧
         if: ${{github.event.inputs.run-passing == 'true' }}
-        run: echo hehe
-          
-#       - if: ( ${{github.event.inputs.run-passing}} == 'true' )
-#         name: run passing cucumber test 🔧
-#         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api"
-#         continue-on-error: true
+        run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api"
+        continue-on-error: true
         
-#       - if: ( ${{github.event.inputs.run-passing}} == 'false' )
-#         name: run failing cucumber test 🔧
-#         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api-failing"
-#         continue-on-error: true
+      - name: run failing cucumber test 🔧
+        if: ${{github.event.inputs.run-passing == 'false' }}
+        run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api-failing"
+        continue-on-error: true
 
-#       - name: artifact cucumber-report.json
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: cucumber-report
-#           path: build/cucumber-reports/cucumber-report.json
+      - name: artifact cucumber-report.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: cucumber-report
+          path: build/cucumber-reports/cucumber-report.json
 
      
 
