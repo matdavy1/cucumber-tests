@@ -30,12 +30,12 @@ jobs:
           
       - name: run passing cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api"
-        if: ( ${{github.event.inputs.run-passing}} == true )
+        if: ( github.event.inputs.run-passing == "true" )
         continue-on-error: true
         
       - name: run failing cucumber test 🔧
         run: chmod +x gradlew && ./gradlew test -Dcucumber.options="--tags @Api-failing"
-        if: ( ${{github.event.inputs.run-passing}} == false )
+        if: ( github.event.inputs.run-passing == "false" )
         continue-on-error: true
 
       - name: artifact cucumber-report.json
